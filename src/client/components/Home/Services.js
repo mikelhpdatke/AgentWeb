@@ -11,6 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import TextField from "@material-ui/core/TextField";
 import { servicesActions } from "../../_actions";
+import TextareaAutosize from "react-textarea-autosize";
 const styles = theme => ({
   root: {
     width: "100%",
@@ -45,7 +46,7 @@ class Services extends Component {
       anchorEl: null,
       selectedIndex: 1,
       pid: 0,
-      dataRecevied:"..."
+      dataRecevied: "..."
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -60,26 +61,31 @@ class Services extends Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
-  handleChange(e){
+  handleChange(e) {
     let name = e.target.name;
     let val = e.target.value;
-    if (name == "pid") this.setState({pid:val},()=>{console.log(this.state)});
+    if (name == "pid")
+      this.setState({ pid: val }, () => {
+        console.log(this.state);
+      });
   }
   render() {
     const { classes } = this.props;
     const { anchorEl } = this.state;
 
     let textField = (
-      <TextField
-        id="outlined-uncontrolled"
-        label="PID"
-        name="pid"
-        value={this.state.pid}
-        className={classes.textField}
-        onChange={this.handleChange}
-        margin="normal"
-        variant="outlined"
-      />
+      <div className="col-4">
+        <TextField
+          id="outlined-uncontrolled"
+          label="PID"
+          name="pid"
+          value={this.state.pid}
+          className={classes.textField}
+          onChange={this.handleChange}
+          margin="normal"
+          variant="outlined"
+        />
+      </div>
     );
 
     if (this.state.selectedIndex != 2) textField = <div />;
@@ -87,54 +93,75 @@ class Services extends Component {
     return (
       <div>
         <h1 className={classes.h1}>{this.props.message.name}</h1>
-        <div className={classes.contrainer}>
-        <div className={classes.root}>
-          <List component="nav">
-            <ListItem
-              button
-              aria-haspopup="true"
-              aria-controls="lock-menu"
-              aria-label="Chức năng"
-              onClick={this.handleClickListItem}
-            >
-              <ListItemText
-                primary="Chức năng"
-                secondary={options[this.state.selectedIndex]}
+        <div class="container">
+          <div class="row justify-content-center">
+            <div className="col-4">
+              <div className={classes.root}>
+                <List component="nav">
+                  <ListItem
+                    button
+                    aria-haspopup="true"
+                    aria-controls="lock-menu"
+                    aria-label="Chức năng"
+                    onClick={this.handleClickListItem}
+                  >
+                    <ListItemText
+                      primary="Chức năng"
+                      secondary={options[this.state.selectedIndex]}
+                    />
+                  </ListItem>
+                </List>
+                <Menu
+                  id="lock-menu"
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={this.handleClose}
+                >
+                  {options.map((option, index) => (
+                    <MenuItem
+                      key={option}
+                      selected={index === this.state.selectedIndex}
+                      onClick={event => this.handleMenuItemClick(event, index)}
+                    >
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </div>
+            </div>
+
+            {textField}
+          </div>
+          <div class="container">
+            <div class="row justify-content-center">
+              <div col-6>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    console.log(this.state);
+                    this.setState({ dataRecevied: "Hello" });
+                  }}
+                >
+                  Gửi
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col">
+              <TextareaAutosize
+               
+                value={this.state.dataRecevied}
+                rows={100}
+                style={{ marginTop:50,width: "100%",minHeight: 350 }}
               />
-            </ListItem>
-          </List>
-          <Menu
-            id="lock-menu"
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={this.handleClose}
-          >
-            {options.map((option, index) => (
-              <MenuItem
-                key={option}
-                selected={index === this.state.selectedIndex}
-                onClick={event => this.handleMenuItemClick(event, index)}
-              >
-                {option}
-              </MenuItem>
-            ))}
-          </Menu>
+            </div>
+          </div>
         </div>
-        <Button variant="contained" color="primary" onClick={()=>{console.log(this.state);this.setState({dataRecevied:"Hello"})}}>
-          Gửi
-        </Button>
-        </div>
-        {textField}
-        <TextField
-          id="outlined-read-only-input"
-          label="Data Received"
-          value={this.state.dataRecevied}
-          margin="normal"
-          InputProps={{
-            readOnly: true
-          }}
-          variant="outlined"
-        />
       </div>
     );
   }
@@ -144,29 +171,27 @@ Services.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-
 const mapDispatchToProps = dispatch => {
-    return {
-      active: newStatus => {
-        dispatch(homeActions.active(newStatus));
-      },
-      inactive: newStatus => {
-        dispatch(homeActions.inactive(newStatus));
-      }
-    };
+  return {
+    active: newStatus => {
+      dispatch(homeActions.active(newStatus));
+    },
+    inactive: newStatus => {
+      dispatch(homeActions.inactive(newStatus));
+    }
   };
-  
-  function mapStateToProps(state) {
-    const { message } = state.services;
-    return {
-      message
-    };
-  }
-  
-  const ConnectedServices = connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Services);
+};
 
+function mapStateToProps(state) {
+  const { message } = state.services;
+  return {
+    message
+  };
+}
+
+const ConnectedServices = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Services);
 
 export default withStyles(styles)(ConnectedServices);
