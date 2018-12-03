@@ -14,11 +14,13 @@
   "author": "ExpressMikel",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "@material-ui/core": "^3.5.1",
     "@material-ui/icons": "^3.0.1",
     "babel-plugin-css-modules-transform": "^1.6.1",
     "babel-plugin-import": "^1.10.0",
     "babel-plugin-transform-assets": "^1.0.2",
+    "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.1.3",
     "chart.js": "^2.7.2",
     "express": "^4.16.3",

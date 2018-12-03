@@ -20,16 +20,80 @@ const styles = {
     justifyContent: "space-around"
   }
 };
-
+export async function HuanFetch(url, json) {
+  const myRequest = new Request(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(json)
+  });
+  return await fetch(myRequest)
+    .then(response => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        console.debug("Something went wrong on api server!");
+      }
+    })
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      console.debug(error);
+    });
+}
 const listCard = [
-  { name: "ProLink Camera", ip: "192.168.0.107", port: "22", card: "1" },
-  { name: "Router Dlink", ip: "192.168.0.1", port: "80", card: "2" }
+  {
+    ip: "192.168.0.107",
+    port: "22",
+    address: "ffff:192.168.0.107:22",
+    active: false
+  },
+  {
+    ip: "192.168.0.1",
+    port: "80",
+    address: "ffff:192.168.0.1:80",
+    active: true
+  }
 ];
 class Home extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      arr: [
+        {
+          ip: "192.168.0.107",
+          port: "22",
+          address: "ffff:192.168.0.107:22",
+          active: false
+        },
+        {
+          ip: "192.168.0.1",
+          port: "80",
+          address: "ffff:192.168.0.1:80",
+          active: true
+        }
+      ]
+    };
+    this.myInterval = setInterval(() => {
+      HuanFetch("http://localhost:8081/api/getClients", {}).then(res => {
+        console.log(res);
+        this.setState({ arr: res.arr });
+      });
+    }, 10000);
   }
 
+  componentWillMount() {
+    HuanFetch("http://localhost:8081/api/getClients", {}).then(res => {
+      console.log(res);
+      this.setState({ arr: res.arr });
+    });
+  }
+  componentWillUnmount() {
+    clearInterval(this.myInterval);
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -37,13 +101,13 @@ class Home extends Component {
         <h1 className={classes.h1}>Controller</h1>
 
         <div className={classes.contrainer}>
-          {listCard.map(x => {
+          {this.state.arr.map(x => {
             return (
               <ConnectedCard
-                name={x.name}
+                name={x.address}
                 ip={x.ip}
                 port={x.port}
-                card={x.card}
+                card={x.address}
               />
             );
           })}

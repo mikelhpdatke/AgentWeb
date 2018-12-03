@@ -36,23 +36,52 @@ app.post("/api/users/authenticate", jsonParser, function(req, res) {
   res.end();
 });
 
-app.get("/api/status", (req, res) => {
+app.get("/api/getClients", (req, res) => {
   res.send("ok");
 });
 
-app.get("/api/fetch", (req, res) => {
-  send_cmd("abc", "xyz", "helloWorld");
-  res.send("ok");
+app.post("/api/getClients", jsonParser, function(req, res) {
+  //console.log(req.body);
+  //let { firstName, lastName, username, password } = req.body;
+  //console.log(firstName, lastName, username, password);
+  //let {id, task, pid} = req.body;
+  res.status(200);
+  var listOfAgent = getClients();
+  console.log(listOfAgent);
+  res.send({
+    arr: listOfAgent
+  });
+  res.end();
+});
+
+app.post("/api/fetch", jsonParser, function(req, res) {
+  //console.log(req.body);
+  //let { firstName, lastName, username, password } = req.body;
+  //console.log(firstName, lastName, username, password);
+  let { id, task, pid } = req.body;
+  console.log(id, task, pid);
+  var mess = task.toString();
+  if (pid != 0) {
+    mess = task + " " + pid.toString();
+  }
+  send_cmd(id, task.toString(), mess);
+  res.status(200);
+  res.send({ status: "okkkkkkkkkk" });
+  res.end();
 });
 
 //app.listen(8081, () => console.log("Listening on port 8081!"));
 server.listen(8081, () => console.log("Listening on port 8081!"));
 
+var userClients;
+
 io.on("connection", clientForUser => {
-    clientForUser.on("subscribeToTimer", interval => {
-     client.emit("timer", message);
+  userClients = clientForUser;
+  clientForUser.on("subscribeToTimer", interval => {
+    client.emit("timer", message);
   });
 });
+//id   task  // task
 // (socketname, "3", "3 1832")
 
 ////////////////////////////////////////////
@@ -63,11 +92,6 @@ var net = require("net");
 var utils = require("./utils");
 
 var clients = require("./clients.json");
-
-// var ioclient = require('socket.io-client')('http://localhost:8081');
-// ioclient.on('connect', function() {
-
-// });
 
 net.createServer(function(socket) {
     socket.name = socket.remoteAddress + ":" + socket.remotePort;
@@ -82,23 +106,25 @@ net.createServer(function(socket) {
     };
 
     socket.on("data", function(data) {
-      var task = null;
-      message = utils.storeData();
-      ioclient.emit('subscribeToTimer', message);
+      var task = utils.getTask(clients, socket.name);
+      message = utils.storeData(task, data);
+      listClientForUser = io.sockets.clients();
+      currentClient = listClientForUser;
+      currentClient.emit("timer", message + "\n");
     });
 
     socket.on("end", function() {
       for (var i = 0; i < clients.length; i++) {
         if (clients[i]["socket"] === socket) {
           clients[i]["active"] = false;
-          clients[i]["socket"] = null;
+          clients[i]["socket"] = "";
+          clients[i]["port"] = "";
+          clients[i]["address"] = "";
         }
       }
     });
 
     clients = utils.addClient(clients, newClient);
-
-    send_cmd(socket.name, "1", "1");
 
     function broadcast(message, sender) {
       clients.forEach(function(client) {
@@ -124,7 +150,17 @@ function send_cmd(socket_name, task, message) {
 }
 
 function getClients() {
-  return clients;
+    var result_listOfAgent = [];
+    for (var i = 0; i < clients.length; i++) {
+        result_listOfAgent.push({
+            ip: clients[i].ip,
+            port: clients[i].port,
+            address: clients[i].address,
+            active: clients[i].active
+        });
+    }
+
+  return result_listOfAgent;
 }
 
 console.log("Chat server running at port 8888\n");

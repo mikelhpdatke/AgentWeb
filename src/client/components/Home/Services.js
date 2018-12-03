@@ -45,7 +45,30 @@ const options = [
   "Lấy dữ liệu mạng",
   "Lấy dữ liệu syscall"
 ];
-
+export async function HuanFetch(url, json) {
+  const myRequest = new Request(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(json)
+  });
+  return await fetch(myRequest)
+    .then(response => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        console.debug("Something went wrong on api server!");
+      }
+    })
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      console.debug(error);
+    });
+}
 class Services extends Component {
   constructor(props) {
     super(props);
@@ -69,7 +92,7 @@ class Services extends Component {
   };
 
   handleMenuItemClick = (event, index) => {
-    this.setState({ selectedIndex: index, anchorEl: null });
+    this.setState({ selectedIndex: index, anchorEl: null, dataRecevied: "" });
   };
 
   handleClose = () => {
@@ -103,7 +126,7 @@ class Services extends Component {
     );
 
     if (this.state.selectedIndex != 2) textField = <div />;
-    //console.log(this.props.title);
+    //console.log(this.props.title); this.props.message.card
     return (
       <div>
         <h1 className={classes.h1}>{this.props.message.name}</h1>
@@ -153,8 +176,18 @@ class Services extends Component {
                   variant="contained"
                   color="primary"
                   onClick={() => {
-                    console.log(this.state);
-                    this.setState({ dataRecevied: "Hello" });
+                    //console.log(this.state);
+                    //this.setState({ dataRecevied: "Hello" });
+                    let data = {
+                      id: this.props.message.id,
+                      task: this.state.selectedIndex + 1,
+                      pid: this.state.pid
+                    };
+                    HuanFetch("http://localhost:8081/api/fetch", data).then(
+                      req => {
+                        console.log('Run send_cmd ok!!!');
+                      }
+                    );
                   }}
                 >
                   Gửi

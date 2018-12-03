@@ -5,7 +5,7 @@ const webpack = require("webpack");
 const outputDirectory = "dist";
 
 module.exports = {
-  entry: { app: ["./src/client/index.js"] },
+  entry:  ["@babel/polyfill","./src/client/index.js"],
   devtool: "inline-source-map",
   output: {
     path: path.join(__dirname, outputDirectory),

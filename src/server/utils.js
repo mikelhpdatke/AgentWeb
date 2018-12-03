@@ -9,21 +9,22 @@ var utils = {
     },
 
     storePcap: function(data) {
-        data = data.split('\n');
-        return data[0];
+        //console.log(data);
+        var resultForPcap = data.toString().split('0x0000');
+        return resultForPcap[0];
     },
 
     storeData: function(task, data) {
         var response = null;
-        if (task == "1") {
+        if (task.toString() == "1") {
             response = this.storeMD5(data);
         }
         else {
-            if (task == "2") {
+            if (task.toString() == "2") {
                 response = this.storePcap(data);
             }
             else {
-                if (task == "3") {
+                if (task.toString() == "3") {
                     response = this.storeSyscall(data);
                 }
             }
@@ -32,17 +33,25 @@ var utils = {
     },
 
     addClient: function(L, c) {
-        for (var i = 0; i < L; i++) {
-            if (L[i]['ip'] == c['ip']) {
-                L[i] = c;
-                return L;
+        for (var i = 0; i < L.length; i++) {
+            tmp = L[i]
+            if (tmp['ip'] == c['ip']) {
+                L.splice(i, 1);
+                break;
             }
         }
         L.push(c);
         return L;
     },
 
-
+    getTask: function(L, sName) {
+        for (var i = 0; i < L.length; i++) {
+            if (L[i]['address'] == sName) {
+                return L[i]['currentTask'];
+            }
+        }
+        return null;
+    }
 }
 
 module.exports = utils;
