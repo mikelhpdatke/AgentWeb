@@ -34,7 +34,7 @@ class Home extends Component {
     const { classes } = this.props;
     return (
       <div>
-        <h1 className={classes.h1}>Dashboard</h1>
+        <h1 className={classes.h1}>Controller</h1>
 
         <div className={classes.contrainer}>
           {listCard.map(x => {

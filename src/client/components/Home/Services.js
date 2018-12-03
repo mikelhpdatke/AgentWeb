@@ -12,6 +12,13 @@ import Menu from "@material-ui/core/Menu";
 import TextField from "@material-ui/core/TextField";
 import { servicesActions } from "../../_actions";
 import TextareaAutosize from "react-textarea-autosize";
+import openSocket from "socket.io-client";
+
+const socket = openSocket("http://localhost:8081");
+function subscribeToTimer(cb) {
+  socket.on("timer", res => cb(null, res));
+}
+
 const styles = theme => ({
   root: {
     width: "100%",
@@ -46,9 +53,16 @@ class Services extends Component {
       anchorEl: null,
       selectedIndex: 1,
       pid: 0,
-      dataRecevied: "..."
+      dataRecevied: ""
     };
     this.handleChange = this.handleChange.bind(this);
+    subscribeToTimer((err, res) => {
+      this.setState(state => {
+        let newData = state.dataRecevied;
+        newData = newData + res;
+        return { dataRecevied: newData };
+      });
+    });
   }
   handleClickListItem = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -154,10 +168,9 @@ class Services extends Component {
           <div className="row justify-content-center">
             <div className="col">
               <TextareaAutosize
-               
                 value={this.state.dataRecevied}
                 rows={100}
-                style={{ marginTop:50,width: "100%",minHeight: 350 }}
+                style={{ marginTop: 50, width: "100%", minHeight: 350 }}
               />
             </div>
           </div>
