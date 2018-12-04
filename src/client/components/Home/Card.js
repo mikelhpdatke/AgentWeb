@@ -35,7 +35,9 @@ const styles = theme => ({
     padding: theme.spacing.unit * 4
   },
   card: {
-    minWidth: 275
+    minWidth: 275,
+    border: '3px solid rgb(131, 167, 233)',
+    borderRadius: '20px'
   },
   bullet: {
     display: "inline-block",

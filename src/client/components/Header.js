@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-import { logo, settingIcon } from "./icon/Icon";
+import { AIS_logo, settingIcon } from "./icon/Icon";
 import "./App.css";
 import { connect } from "react-redux";
 import ConnectedDrawers from "./SettingManagement/Drawers";
@@ -41,7 +41,7 @@ class Header extends Component {
         >
           <a className="navbar-brand" href="/">
             <img
-              src={logo}
+              src={AIS_logo}
               width="70"
               height="50"
               style={{ margin: 0 }}
@@ -61,7 +61,7 @@ class Header extends Component {
           </button>
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div className="navbar-nav mr-auto">
-              <ItemLink to="/" titleName="Trang chủ" />
+              <ItemLink to="/" titleName="Home" />
               <img
                 className="pull-right"
                 src={settingIcon}

@@ -13,9 +13,9 @@ import Transfer_Logo from '../../media/icons/icon_transfer-01-01.png'
 import User_Logo from '../../media/icons/icon_user-01-01.png'
 import Web_Logo from '../../media/icons/icon_web-01-01.png'
 import Email_Logo from '../../media/icons/iconemail-01-01.png'
-
+import AIS_logo from '../../media/icons/aislogo.png'
 import logo from '../../media/icons/ptit70x50-01-01.png'
 import settingIcon from '../../media/icons/baseline-settings-20px.svg'
 export {Alert_Logo, ListAlert_Logo, DNS_Logo, Group_Logo, Agent_Logo, ArrowDown_Logo
 , Analyze_Logo, Sms_Logo, Statitic_Logo, Search_Logo, Transfer_Logo, User_Logo, Web_Logo, Email_Logo,
-logo, settingIcon}
+logo, settingIcon, AIS_logo}

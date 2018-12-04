@@ -47,13 +47,20 @@ const styles = theme => ({
   },
   close: {
     padding: theme.spacing.unit / 2
+  },
+  card: {
+    minWidth: 275,
+    border: '3px solid rgb(131, 167, 233)',
+    borderRadius: '20px',
+    margin: '5px 5px',
+    padding: '4px'
   }
 });
 
 const options = [
-  "Lấy dữ liệu PID và MD5",
-  "Lấy dữ liệu mạng",
-  "Lấy dữ liệu syscall"
+  "Get PID and MD5 data",
+  "Get network data",
+  "Get syscall data"
 ];
 
 export async function HuanFetch(url, json) {
@@ -169,7 +176,7 @@ class Services extends Component {
               });
             }}
           >
-            Gửi
+            Send
           </Button>
         </div>
       );
@@ -204,7 +211,7 @@ class Services extends Component {
           ContentProps={{
             "aria-describedby": "message-id"
           }}
-          message={<span id="message-id">Note archived</span>}
+          message={<span id="message-id">Successfully received</span>}
           action={[
             <Button
               key="undo"
@@ -227,20 +234,20 @@ class Services extends Component {
         />
 
         <h1 className={classes.h1}>{this.props.message.name}</h1>
-        <div class="container">
-          <div class="row justify-content-center">
+        <div className="container"  style={{marginTop:"200px"}}>
+          <div className="row justify-content-center"  >
             <div className="col-4">
               <div className={classes.root}>
-                <List component="nav">
+                <List component="nav" className={classes.card}>
                   <ListItem
                     button
                     aria-haspopup="true"
                     aria-controls="lock-menu"
-                    aria-label="Chức năng"
+                    aria-label="Function"
                     onClick={this.handleClickListItem}
                   >
                     <ListItemText
-                      primary="Chức năng"
+                      primary="Function"
                       secondary={options[this.state.selectedIndex]}
                     />
                   </ListItem>
@@ -249,7 +256,7 @@ class Services extends Component {
                   id="lock-menu"
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
-                  onClose={this.handleClose}
+                  onClose={this.handleClose} 
                 >
                   {options.map((option, index) => (
                     <MenuItem

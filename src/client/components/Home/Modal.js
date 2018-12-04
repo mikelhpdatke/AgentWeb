@@ -48,7 +48,7 @@ class SimpleModal extends React.Component {
 
     return (
       <div>
-        <Button onClick={this.handleOpen}>CHẤP NHẬN</Button>
+        <Button onClick={this.handleOpen}>ACCEPT</Button>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
@@ -57,10 +57,10 @@ class SimpleModal extends React.Component {
         >
           <div style={getModalStyle()} className={classes.paper}>
             <Typography variant="h6" id="modal-title">
-              CHÚ Ý
+              ATTENTION
             </Typography>
             <Typography variant="subtitle1" id="simple-modal-description">
-              BẠN CÓ CHẮC CHẮN MUỐN CÀI ĐẶT TÁC TỬ LÊN THIẾT BỊ KHÔNG
+              ARE YOU SURE TO INSTALL AGENT TO YOUR DEVICE?
             </Typography>
             <SimpleModalWrapped />
           </div>
