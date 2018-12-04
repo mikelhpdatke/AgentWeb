@@ -46,11 +46,9 @@ module.exports = {
     hot: true,
     inline: true,
     open:true,
+    port: 3000,
     proxy: {
-      "/api": {
-        target: "http://localhost:8081/",
-        secure: false
-      }
+      '/api': 'http://localhost:8081'
     }
   }
 };

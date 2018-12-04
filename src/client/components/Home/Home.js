@@ -44,20 +44,7 @@ export async function HuanFetch(url, json) {
       console.debug(error);
     });
 }
-const listCard = [
-  {
-    ip: "192.168.0.107",
-    port: "22",
-    address: "ffff:192.168.0.107:22",
-    active: false
-  },
-  {
-    ip: "192.168.0.1",
-    port: "80",
-    address: "ffff:192.168.0.1:80",
-    active: true
-  }
-];
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -73,12 +60,12 @@ class Home extends Component {
           ip: "192.168.0.1",
           port: "80",
           address: "ffff:192.168.0.1:80",
-          active: true
+          active: false
         }
       ]
     };
     this.myInterval = setInterval(() => {
-      HuanFetch("http://localhost:8081/api/getClients", {}).then(res => {
+      HuanFetch("/api/getClients", {}).then(res => {
         console.log(res);
         this.setState({ arr: res.arr });
       });
@@ -86,7 +73,7 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    HuanFetch("http://localhost:8081/api/getClients", {}).then(res => {
+    HuanFetch("/api/getClients", {}).then(res => {
       console.log(res);
       this.setState({ arr: res.arr });
     });
@@ -108,6 +95,7 @@ class Home extends Component {
                 ip={x.ip}
                 port={x.port}
                 card={x.address}
+                status = {x.active == true ? 'ACTIVE' : 'INACTIVE'}
               />
             );
           })}

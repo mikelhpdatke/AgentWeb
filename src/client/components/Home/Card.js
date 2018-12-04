@@ -9,7 +9,31 @@ import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 import { homeActions, servicesActions } from "../../_actions";
 import { Link } from "react-router-dom";
-const styles = {
+import Modal from "@material-ui/core/Modal";
+
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
+
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`
+  };
+}
+
+const styles = theme => ({
+  paper: {
+    position: "absolute",
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4
+  },
   card: {
     minWidth: 275
   },
@@ -24,19 +48,54 @@ const styles = {
   pos: {
     marginBottom: 12
   }
-};
-
+});
 class SimpleCard extends Component {
   constructor(props) {
     super(props);
-    this.props.inactive({key:this.props.card, val:false});
+    this.state = {
+      open: false
+    };
+    //this.props.inactive({ key: this.props.card, val: false });
   }
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
   render() {
+    console.log(this.props.status);
     const { classes } = this.props;
-    let status = "ACTIVE";
+    //let status = "ACTIVE";
     //console.log(this.props.card);
     //console.log(this.props.message[this.props.card]+'??????wtf');
-    if (this.props.message[this.props.card] == false) status = "INACTIVE";
+    //if (this.props.message[this.props.card] == false) status = "INACTIVE";
+    //const textModal = "Connect";
+    console.log(this.props.status, this.props.status == "INACTIVE");
+    let button;
+    if (this.props.status == "INACTIVE") {
+      button = (
+        <Button
+          size="small"
+          onClick={this.handleOpen}
+        >
+          Connect
+        </Button>
+      );
+    } else {
+      button = (
+        <Button
+          size="small"
+          onClick={() => {
+            this.props.send({ name: this.props.name, id: this.props.card });
+          }}
+        >
+          <Link to="/services">Analyse</Link>
+        </Button>
+      );
+    }
+
     return (
       <Card className={classes.card}>
         <CardContent>
@@ -55,12 +114,31 @@ class SimpleCard extends Component {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={()=>{
-            if (this.props.message[this.props.card] == true) this.props.inactive({key:this.props.card, val:false});
-            else this.props.active({key:this.props.card, val:true});
-          }}>{status}</Button>
-          <Button size="small" onClick={()=>{this.props.send({name:this.props.name, id:this.props.card})}}
-          ><Link to="/services" >Phân tích</Link></Button>
+          <Button
+            size="small"
+            color={this.props.status == "ACTIVE" ? "primary" : "secondary"}
+          >
+            {this.props.status}
+          </Button>
+          {button}
+          <Modal
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+            open={this.state.open}
+            onClose={this.handleClose}
+          >
+            <div style={getModalStyle()} className={classes.paper}>
+              <Typography variant="h6" id="modal-title">
+                CHÚ Ý
+              </Typography>
+              <Typography variant="subtitle1" id="simple-modal-description">
+                BẠN CÓ CHẮC CHẮN MUỐN CÀI ĐẶT TÁC TỬ LÊN THIẾT BỊ KHÔNG?
+              </Typography>
+              <Button variant="contained" color="secondary" >
+        CÀI ĐẶT
+      </Button>
+            </div>
+          </Modal>
         </CardActions>
       </Card>
     );

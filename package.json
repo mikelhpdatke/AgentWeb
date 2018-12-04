@@ -7,7 +7,7 @@
     "pack": "webpack --config webpack.config.js",
     "build": "npm run pack",
     "server": "nodemon src/server/index.js",
-    "client": "webpack-dev-server -d --mode development",
+    "client": "npx webpack-dev-server --mode development --devtool inline-source-map --hot",
     "start": "npm run build && node src/server/index.js",
     "dev": "npx concurrently \"npm run server\" \"npm run client\""
   },

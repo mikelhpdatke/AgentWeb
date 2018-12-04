@@ -13,6 +13,10 @@ import TextField from "@material-ui/core/TextField";
 import { servicesActions } from "../../_actions";
 import TextareaAutosize from "react-textarea-autosize";
 import openSocket from "socket.io-client";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 const socket = openSocket("http://localhost:8081");
 function subscribeToTimer(cb) {
@@ -24,6 +28,9 @@ const styles = theme => ({
     width: "100%",
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper
+  },
+  progress: {
+    margin: theme.spacing.unit * 2
   },
   h1: {
     textAlign: "center",
@@ -37,6 +44,9 @@ const styles = theme => ({
     marginTop: "50px",
     display: "flex",
     justifyContent: "center"
+  },
+  close: {
+    padding: theme.spacing.unit / 2
   }
 });
 
@@ -45,6 +55,7 @@ const options = [
   "Lấy dữ liệu mạng",
   "Lấy dữ liệu syscall"
 ];
+
 export async function HuanFetch(url, json) {
   const myRequest = new Request(url, {
     method: "POST",
@@ -76,17 +87,34 @@ class Services extends Component {
       anchorEl: null,
       selectedIndex: 1,
       pid: 0,
-      dataRecevied: ""
+      dataRecevied: "",
+      sendding: false,
+      openSnackBar: false
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleClickSnackBar = this.handleClickSnackBar.bind(this);
+    this.handleCloseSnackBar = this.handleCloseSnackBar.bind(this);
+   
     subscribeToTimer((err, res) => {
       this.setState(state => {
         let newData = state.dataRecevied;
         newData = newData + res;
-        return { dataRecevied: newData };
+        if (newData.length > 10) newData = "hello";
+        return { dataRecevied: newData, sendding: false, openSnackBar:true };
       });
     });
   }
+  handleClickSnackBar = () => {
+    this.setState({ openSnackBar: true });
+  };
+
+  handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openSnackBar: false });
+  };
   handleClickListItem = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
@@ -98,6 +126,7 @@ class Services extends Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
+
   handleChange(e) {
     let name = e.target.name;
     let val = e.target.value;
@@ -109,7 +138,42 @@ class Services extends Component {
   render() {
     const { classes } = this.props;
     const { anchorEl } = this.state;
-
+    let sendState;
+    if (this.state.sendding == true) {
+      sendState = (
+        <div className="col-1">
+          <CircularProgress className={classes.progress} />
+        </div>
+      );
+    } else {
+      sendState = (
+        <div className="col-1">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              //console.log(this.state);
+              //this.setState({ dataRecevied: "Hello" });
+              let data = {
+                id: this.props.message.id,
+                task: this.state.selectedIndex + 1,
+                pid: this.state.pid
+              };
+              this.setState({ sendding: true }, () => {
+                HuanFetch("http://localhost:8081/api/fetch", data).then(req => {
+                  console.log("Run send_cmd ok!!!");
+                  //setInterval(() => {
+                  //  this.setState({ sendding: false, openSnackBar:true });
+                  //}, 5000);
+                });
+              });
+            }}
+          >
+            Gửi
+          </Button>
+        </div>
+      );
+    }
     let textField = (
       <div className="col-4">
         <TextField
@@ -129,6 +193,39 @@ class Services extends Component {
     //console.log(this.props.title); this.props.message.card
     return (
       <div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={this.state.openSnackBar}
+          autoHideDuration={5000}
+          onClose={this.handleCloseSnackBar}
+          ContentProps={{
+            "aria-describedby": "message-id"
+          }}
+          message={<span id="message-id">Note archived</span>}
+          action={[
+            <Button
+              key="undo"
+              color="secondary"
+              size="small"
+              onClick={this.handleCloseSnackBar}
+            >
+              UNDO
+            </Button>,
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              className={classes.close}
+              onClick={this.handleCloseSnackBar}
+            >
+              <CloseIcon />
+            </IconButton>
+          ]}
+        />
+
         <h1 className={classes.h1}>{this.props.message.name}</h1>
         <div class="container">
           <div class="row justify-content-center">
@@ -169,43 +266,8 @@ class Services extends Component {
 
             {textField}
           </div>
-          <div class="container">
-            <div class="row justify-content-center">
-              <div col-6>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    //console.log(this.state);
-                    //this.setState({ dataRecevied: "Hello" });
-                    let data = {
-                      id: this.props.message.id,
-                      task: this.state.selectedIndex + 1,
-                      pid: this.state.pid
-                    };
-                    HuanFetch("http://localhost:8081/api/fetch", data).then(
-                      req => {
-                        console.log('Run send_cmd ok!!!');
-                      }
-                    );
-                  }}
-                >
-                  Gửi
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col">
-              <TextareaAutosize
-                value={this.state.dataRecevied}
-                rows={100}
-                style={{ marginTop: 50, width: "100%", minHeight: 350 }}
-              />
-            </div>
+          <div className="container">
+            <div className="row justify-content-center">{sendState}</div>
           </div>
         </div>
       </div>
