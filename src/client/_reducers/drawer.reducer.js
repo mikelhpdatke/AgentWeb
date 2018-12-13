@@ -1,19 +1,19 @@
-import { drawerConstants } from "../_constants";
+import { drawerConstants } from '../_constants';
 
 export const drawer = (
-  state = { type: "drawerClosed", message: false },
+  state = { type: 'drawerClosed', message: false },
   action
 ) => {
   switch (action.type) {
     case drawerConstants.CLOSED:
       return {
-        type: "drawerClosed",
-        message: action.message
+        type: 'drawerClosed',
+        message: action.message,
       };
     case drawerConstants.OPENED:
       return {
-        type: "drawerOpened",
-        message: action.message
+        type: 'drawerOpened',
+        message: action.message,
       };
     default:
       return state;

@@ -1,13 +1,14 @@
-import { drawerConstants } from "../_constants";
+import { drawerConstants } from '../_constants';
+
 export const drawerActions = {
   opened,
-  closed
-}
+  closed,
+};
 
 function opened(message) {
-  return {type:drawerConstants.OPENED, message}
+  return { type: drawerConstants.OPENED, message };
 }
 
 function closed(message) {
-  return {type:drawerConstants.CLOSED, message}
+  return { type: drawerConstants.CLOSED, message };
 }

@@ -1,13 +1,14 @@
-import { homeConstants } from "../_constants";
+import { homeConstants } from '../_constants';
+
 export const homeActions = {
   active,
-  inactive
-}
+  inactive,
+};
 
 function active(message) {
-  return {type:homeConstants.ACTIVE, message}
+  return { type: homeConstants.ACTIVE, message };
 }
 
 function inactive(message) {
-  return {type:homeConstants.INACTIVE, message}
+  return { type: homeConstants.INACTIVE, message };
 }

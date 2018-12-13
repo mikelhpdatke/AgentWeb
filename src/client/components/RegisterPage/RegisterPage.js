@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { userActions } from "../../_actions";
+import { userActions } from '../../_actions';
 
 class RegisterPage extends React.Component {
   constructor(props) {
@@ -10,12 +10,12 @@ class RegisterPage extends React.Component {
 
     this.state = {
       user: {
-        firstName: "",
-        lastName: "",
-        username: "",
-        password: ""
+        firstName: '',
+        lastName: '',
+        username: '',
+        password: '',
       },
-      submitted: false
+      submitted: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -28,16 +28,16 @@ class RegisterPage extends React.Component {
     this.setState({
       user: {
         ...user,
-        [name]: value
-      }
+        [name]: value,
+      },
     });
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    fetch("/api/status")
+    fetch('/api/status')
       .then(res => res.text())
-      .then(res => console.log(res, "=?//////////////////"));
+      .then(res => console.log(res, '=?//////////////////'));
 
     this.setState({ submitted: true });
     const { user } = this.state;
@@ -54,19 +54,18 @@ class RegisterPage extends React.Component {
     return (
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-around",
-          marginTop: "100px"
+          display: 'flex',
+          justifyContent: 'space-around',
+          marginTop: '100px',
         }}
       >
         <div className="col-md-3 col-md-offset-3">
           <h2>Register</h2>
           <form name="form" onSubmit={this.handleSubmit}>
             <div
-              className={
-                "form-group" +
-                (submitted && !user.firstName ? " has-error" : "")
-              }
+              className={`form-group${
+                submitted && !user.firstName ? ' has-error' : ''
+              }`}
             >
               <label htmlFor="firstName">First Name</label>
               <input
@@ -81,9 +80,9 @@ class RegisterPage extends React.Component {
               )}
             </div>
             <div
-              className={
-                "form-group" + (submitted && !user.lastName ? " has-error" : "")
-              }
+              className={`form-group${
+                submitted && !user.lastName ? ' has-error' : ''
+              }`}
             >
               <label htmlFor="lastName">Last Name</label>
               <input
@@ -98,9 +97,9 @@ class RegisterPage extends React.Component {
               )}
             </div>
             <div
-              className={
-                "form-group" + (submitted && !user.username ? " has-error" : "")
-              }
+              className={`form-group${
+                submitted && !user.username ? ' has-error' : ''
+              }`}
             >
               <label htmlFor="username">Username</label>
               <input
@@ -115,9 +114,9 @@ class RegisterPage extends React.Component {
               )}
             </div>
             <div
-              className={
-                "form-group" + (submitted && !user.password ? " has-error" : "")
-              }
+              className={`form-group${
+                submitted && !user.password ? ' has-error' : ''
+              }`}
             >
               <label htmlFor="password">Password</label>
               <input
@@ -150,7 +149,7 @@ class RegisterPage extends React.Component {
 function mapStateToProps(state) {
   const { registering } = state.registration;
   return {
-    registering
+    registering,
   };
 }
 

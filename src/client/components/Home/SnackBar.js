@@ -17,7 +17,9 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <Button onClick={this.handleClick}>Show snackbar</Button>
-        <Button onClick={this.handleClickVariant('warning')}>Show warning snackbar</Button>
+        <Button onClick={this.handleClickVariant('warning')}>
+          Show warning snackbar
+        </Button>
       </React.Fragment>
     );
   }

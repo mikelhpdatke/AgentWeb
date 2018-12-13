@@ -1,4 +1,4 @@
 export const homeConstants = {
-  ACTIVE:'ACTIVE',
-  INACTIVE:'INACTIVE'
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
 };

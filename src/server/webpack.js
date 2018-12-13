@@ -1,24 +1,27 @@
 // External libraries
-var webpack = require("webpack");
-var webpackDevServer = require("webpack-dev-server");
+// eslint-disable-next-line import/no-extraneous-dependencies
+const webpack = require('webpack');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const webpackDevServer = require('webpack-dev-server');
 
-var config = require("../../webpack.config.js");
+const config = require('../../webpack.config.js');
 
 config.entry.app.unshift(
-  "webpack-dev-server/client?http://localhost:8080/",
-  "webpack/hot/dev-server"
+  'webpack-dev-server/client?http://localhost:8080/',
+  'webpack/hot/dev-server'
 );
 
 console.log(config);
-var compiler = webpack(config);
-var server = new webpackDevServer(compiler, {
+const compiler = webpack(config);
+// eslint-disable-next-line new-cap
+const server = new webpackDevServer(compiler, {
   hot: true,
   historyApiFallback: true,
   proxy: {
-    "/api": {
-      target: "http://localhost:8081",
-      secure: false
-    }
-  }
+    '/api': {
+      target: 'http://localhost:8081',
+      secure: false,
+    },
+  },
 });
 server.listen(8080);

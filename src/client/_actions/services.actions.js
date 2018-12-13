@@ -1,9 +1,9 @@
 import { servicesConstants } from '../_constants';
 
 export const servicesActions = {
-    send
+  send,
 };
 
 function send(message) {
-    return { type: servicesConstants.SERVICES, message };
+  return { type: servicesConstants.SERVICES, message };
 }

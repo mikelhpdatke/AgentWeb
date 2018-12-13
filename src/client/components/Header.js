@@ -1,38 +1,42 @@
-import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
-import { AIS_logo, settingIcon } from "./icon/Icon";
-import "./App.css";
-import { connect } from "react-redux";
-import ConnectedDrawers from "./SettingManagement/Drawers";
-import { drawerActions } from "../_actions/drawer.actions";
-import { map } from "rsvp";
-const ItemLink = props => {
-  return (
-    <NavLink
-      style={{ color: "black", fontWeight: "bold" }}
-      className="nav-item nav-link"
-      exact
-      to={props.to}
-      activeStyle={{
-        fontWeight: "bold",
-        color: "red",
-        textDecoration: "underline"
-      }}
-    >
-      {props.titleName}
-    </NavLink>
-  );
-};
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import './App.css';
+import ConnectedDrawers from './SettingManagement/Drawers';
+import { drawerActions } from '../_actions/drawer.actions';
+import { aisLogo, settingIcon } from './icon/Icon';
+// import { map } from 'rsvp';
+
+const ItemLink = ({ to, titleName }) => (
+  <NavLink
+    style={{ color: 'black', fontWeight: 'bold' }}
+    className="nav-item nav-link"
+    exact
+    to={to}
+    activeStyle={{
+      fontWeight: 'bold',
+      color: 'red',
+      textDecoration: 'underline',
+    }}
+  >
+    {titleName}
+  </NavLink>
+);
 
 class Header extends Component {
   componentDidMount() {
-    //notification
+    // notification
   }
+
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <div>
-        <ConnectedDrawers/>
+        <ConnectedDrawers />
         <nav
           className="navbar navbar-expand-lg bg-light"
           fill="true"
@@ -41,7 +45,7 @@ class Header extends Component {
         >
           <a className="navbar-brand" href="/">
             <img
-              src={AIS_logo}
+              src={aisLogo}
               width="70"
               height="50"
               style={{ margin: 0 }}
@@ -68,9 +72,11 @@ class Header extends Component {
                 width="50"
                 height="25"
                 onClick={() => {
-                  //console.log(this.props.dispatch);
+                  // console.log(this.props.dispatch);
+                  // eslint-disable-next-line react/destructuring-assignment
                   this.props.opened(true);
                 }}
+                alt=""
               />
             </div>
           </div>
@@ -79,23 +85,30 @@ class Header extends Component {
     );
   }
 }
-
+ItemLink.propTypes = {
+  to: PropTypes.string.isRequired,
+  titleName: PropTypes.string.isRequired,
+};
+Header.propTypes = {
+  opened: PropTypes.func.isRequired,
+};
 function mapStateToProps(state) {
   const user = state;
   return {
-    user
+    user,
   };
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    opened: newStatus => {
-      dispatch(drawerActions.opened(newStatus));
-    },
-    closed: newStatus => {
-      dispatch(drawerActions.closed(newStatus));
-    }
-  };
-};
-const connectedHeaderPage = connect(mapStateToProps, mapDispatchToProps)(Header);
-export { connectedHeaderPage };
+const mapDispatchToProps = dispatch => ({
+  opened: newStatus => {
+    dispatch(drawerActions.opened(newStatus));
+  },
+  closed: newStatus => {
+    dispatch(drawerActions.closed(newStatus));
+  },
+});
+const connectedHeaderPage = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Header);
+export default connectedHeaderPage;

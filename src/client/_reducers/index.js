@@ -7,6 +7,7 @@ import { alert } from './alert.reducer';
 import { drawer } from './drawer.reducer';
 import { home } from './home.reducer';
 import { services } from './services.reducer';
+
 const rootReducer = combineReducers({
   authentication,
   registration,
@@ -14,7 +15,7 @@ const rootReducer = combineReducers({
   alert,
   drawer,
   home,
-  services
+  services,
 });
 
 export default rootReducer;

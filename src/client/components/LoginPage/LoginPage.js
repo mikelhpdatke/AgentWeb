@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { userActions } from "../../_actions";
+import { userActions } from '../../_actions';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -12,9 +12,9 @@ class LoginPage extends React.Component {
     this.props.dispatch(userActions.logout());
 
     this.state = {
-      username: "",
-      password: "",
-      submitted: false
+      username: '',
+      password: '',
+      submitted: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -41,14 +41,20 @@ class LoginPage extends React.Component {
     const { loggingIn } = this.props;
     const { username, password, submitted } = this.state;
     return (
-      <div style={{ display: "flex", justifyContent: "space-around", marginTop:'100px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          marginTop: '100px',
+        }}
+      >
         <div className="col-md-3 col-md-offset-3">
           <h2>Login</h2>
           <form name="form" onSubmit={this.handleSubmit}>
             <div
-              className={
-                "form-group" + (submitted && !username ? " has-error" : "")
-              }
+              className={`form-group${
+                submitted && !username ? ' has-error' : ''
+              }`}
             >
               <label htmlFor="username">Username</label>
               <input
@@ -63,9 +69,9 @@ class LoginPage extends React.Component {
               )}
             </div>
             <div
-              className={
-                "form-group" + (submitted && !password ? " has-error" : "")
-              }
+              className={`form-group${
+                submitted && !password ? ' has-error' : ''
+              }`}
             >
               <label htmlFor="password">Password</label>
               <input
@@ -98,7 +104,7 @@ class LoginPage extends React.Component {
 function mapStateToProps(state) {
   const { loggingIn } = state.authentication;
   return {
-    loggingIn
+    loggingIn,
   };
 }
 

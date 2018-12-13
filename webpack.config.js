@@ -1,18 +1,19 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const webpack = require("webpack");
-const outputDirectory = "dist";
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
+
+const outputDirectory = 'dist';
 
 module.exports = {
-  entry:  ["@babel/polyfill","./src/client/index.js"],
-  devtool: "inline-source-map",
+  entry:  ['@babel/polyfill','./src/client/index.js'],
+  devtool: 'inline-source-map',
   output: {
     path: path.join(__dirname, outputDirectory),
-    filename: "bundle.js"
+    filename: 'bundle.js'
   },
   resolve: {
-    extensions: [".js", "jsx"]
+    extensions: ['.js', 'jsx']
   },
   module: {
     rules: [
@@ -20,24 +21,24 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: 'babel-loader'
         }
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: ["file-loader"]
+        use: ['file-loader']
       }
     ]
   },
   plugins: [
     new CleanWebpackPlugin([outputDirectory]),
     new HtmlWebpackPlugin({
-      template: "./public/index.html",
-      favicon: "./public/favicon.ico"
+      template: './public/index.html',
+      favicon: './public/favicon.ico'
     }),
     new webpack.HotModuleReplacementPlugin()
   ],

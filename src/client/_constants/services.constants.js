@@ -1,3 +1,3 @@
 export const servicesConstants = {
-  SERVICES:'SERVICES'
+  SERVICES: 'SERVICES',
 };
