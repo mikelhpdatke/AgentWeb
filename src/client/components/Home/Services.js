@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,13 +10,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import TextField from '@material-ui/core/TextField';
-import TextareaAutosize from 'react-textarea-autosize';
+// import TextareaAutosize from 'react-textarea-autosize';
+// eslint-disable-next-line import/no-unresolved
 import openSocket from 'socket.io-client';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { servicesActions } from '../../_actions';
+import { homeActions } from '../../_actions/index';
+// import { servicesActions } from '../../_actions';
 
 const socket = openSocket('http://localhost:8081');
 function subscribeToTimer(cb) {
@@ -72,16 +74,18 @@ export async function HuanFetch(url, json) {
     },
     body: JSON.stringify(json),
   });
-  return await fetch(myRequest)
+  await fetch(myRequest)
     .then(response => {
       if (response.status === 200) {
         return response.json();
       }
+      // return None;
       console.debug('Something went wrong on api server!');
     })
     .then(response => response)
     .catch(error => {
       console.debug(error);
+      // return None;
     });
 }
 class Services extends Component {
@@ -149,7 +153,9 @@ class Services extends Component {
     const { classes } = this.props;
     const { anchorEl } = this.state;
     let sendState;
-    if (this.state.sendding === true) {
+    const { sendding, pid, selectedIndex, openSnackBar } = this.state;
+    const { message } = this.props;
+    if (sendding === true) {
       sendState = (
         <div className="col-1">
           <CircularProgress className={classes.progress} />
@@ -165,12 +171,12 @@ class Services extends Component {
               // console.log(this.state);
               // this.setState({ dataRecevied: "Hello" });
               const data = {
-                id: this.props.message.id,
-                task: this.state.selectedIndex + 1,
-                pid: this.state.pid,
+                id: message.id,
+                task: selectedIndex + 1,
+                pid,
               };
               this.setState({ sendding: true }, () => {
-                HuanFetch('http://localhost:8081/api/fetch', data).then(req => {
+                HuanFetch('http://localhost:8081/api/fetch', data).then(() => {
                   console.log('Run send_cmd ok!!!');
                   // setInterval(() => {
                   //  this.setState({ sendding: false, openSnackBar:true });
@@ -190,7 +196,7 @@ class Services extends Component {
           id="outlined-uncontrolled"
           label="PID"
           name="pid"
-          value={this.state.pid}
+          value={pid}
           className={classes.textField}
           onChange={this.handleChange}
           margin="normal"
@@ -199,7 +205,7 @@ class Services extends Component {
       </div>
     );
 
-    if (this.state.selectedIndex != 2) {
+    if (selectedIndex !== 2) {
       textField = <div />;
     }
     // console.log(this.props.title); this.props.message.card
@@ -210,7 +216,7 @@ class Services extends Component {
             vertical: 'bottom',
             horizontal: 'left',
           }}
-          open={this.state.openSnackBar}
+          open={openSnackBar}
           autoHideDuration={5000}
           onClose={this.handleCloseSnackBar}
           ContentProps={{
@@ -238,7 +244,7 @@ class Services extends Component {
           ]}
         />
 
-        <h1 className={classes.h1}>{this.props.message.name}</h1>
+        <h1 className={classes.h1}>{message.name}</h1>
         <div className="container" style={{ marginTop: '200px' }}>
           <div className="row justify-content-center">
             <div className="col-4">
@@ -253,7 +259,7 @@ class Services extends Component {
                   >
                     <ListItemText
                       primary="Function"
-                      secondary={options[this.state.selectedIndex]}
+                      secondary={options[selectedIndex]}
                     />
                   </ListItem>
                 </List>
@@ -266,7 +272,7 @@ class Services extends Component {
                   {options.map((option, index) => (
                     <MenuItem
                       key={option}
-                      selected={index === this.state.selectedIndex}
+                      selected={index === selectedIndex}
                       onClick={event => this.handleMenuItemClick(event, index)}
                     >
                       {option}
@@ -289,6 +295,7 @@ class Services extends Component {
 
 Services.propTypes = {
   classes: PropTypes.object.isRequired,
+  message: PropTypes.object.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
