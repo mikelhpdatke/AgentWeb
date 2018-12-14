@@ -52,43 +52,34 @@ class Header extends Component {
               alt=""
             />
           </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div className="navbar-nav mr-auto">
+            <ul className="navbar-nav mr-auto">
               <ItemLink to="/" titleName="Home" />
-              <img
-                className="pull-right"
-                src={settingIcon}
-                width="50"
-                height="25"
-                onClick={() => {
-                  // console.log(this.props.dispatch);
-                  // eslint-disable-next-line react/destructuring-assignment
-                  this.props.opened(true);
-                }}
-                alt=""
-              />
-            </div>
+            </ul>
+            <img
+              className="pull-right"
+              src={settingIcon}
+              width="50"
+              height="25"
+              onClick={() => {
+                // console.log(this.props.dispatch);
+                // eslint-disable-next-line react/destructuring-assignment
+                this.props.opened(true);
+              }}
+              alt=""
+            />
           </div>
         </nav>
       </div>
     );
   }
 }
+
 ItemLink.propTypes = {
   to: PropTypes.string.isRequired,
   titleName: PropTypes.string.isRequired,
 };
+
 Header.propTypes = {
   opened: PropTypes.func.isRequired,
 };
@@ -108,6 +99,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(drawerActions.closed(newStatus));
   },
 });
+
 const ConnectedHeaderPage = connect(
   mapStateToProps,
   mapDispatchToProps
