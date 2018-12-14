@@ -1,9 +1,10 @@
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+// import { Link } from 'react-router-dom';
+// import Button from '@material-ui/core/Button';
 import ConnectedCard from './Card';
 
 const styles = {
@@ -30,7 +31,7 @@ export async function HuanFetch(url, json) {
     },
     body: JSON.stringify(json),
   });
-  return await fetch(myRequest)
+  await fetch(myRequest)
     .then(response => {
       if (response.status === 200) {
         return response.json();
@@ -94,7 +95,7 @@ class Home extends Component {
               ip={x.ip}
               port={x.port}
               card={x.address}
-              status={x.active == true ? 'ACTIVE' : 'INACTIVE'}
+              status={x.active === true ? 'ACTIVE' : 'INACTIVE'}
             />
           ))}
         </div>

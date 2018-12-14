@@ -24,13 +24,16 @@ const styles = {
 class TemporaryDrawer extends React.Component {
   constructor(props) {
     super(props);
-    this.props.closed(false);
+    const { closed } = this.props;
+    closed(false);
   }
 
   toggleDrawer = (side, open) => () => {
-    if (open == true) {
+    if (open === true) {
+      // eslint-disable-next-line react/destructuring-assignment
       this.props.opened(true);
     } else {
+      // eslint-disable-next-line react/destructuring-assignment
       this.props.closed(false);
     }
   };
@@ -62,11 +65,14 @@ class TemporaryDrawer extends React.Component {
         </List>
       </div>
     );
-    console.log('in Drawerssssssssssssss state=', this.props.message);
+    // console.log('in Drawerssssssssssssss state=', this.props.message);
     return (
       <div>
         <Drawer
           anchor="right"
+          // eslint-disable-next-line react/destructuring-assignment
+          // eslint-disable-next-line react/prop-types
+          // eslint-disable-next-line react/destructuring-assignment
           open={this.props.message}
           onClose={this.toggleDrawer('right', false)}
         >
@@ -86,6 +92,9 @@ class TemporaryDrawer extends React.Component {
 
 TemporaryDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
+  closed: PropTypes.func.isRequired,
+  opened: PropTypes.func.isRequired,
+  message: PropTypes.bool.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({

@@ -6,10 +6,10 @@ import './App.css';
 import { connect } from 'react-redux';
 // import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import connectedHeaderPage from './Header';
+import ConnectedHeaderPage from './Header';
 import Home from './Home/Home';
-import LogManagement from './LogManagement/LogManagement';
-import ServiceManagement from './ServiceManagement/ServiceManagement';
+// import LogManagement from './LogManagement/LogManagement';
+// import ServiceManagement from './ServiceManagement/ServiceManagement';
 // import Setting from './SettingManagement/Setting';
 import { history } from '../_helpers';
 import { alertActions } from '../_actions';
@@ -36,9 +36,12 @@ class App extends React.Component {
         history.location.pathname === '/login' ||
         history.location.pathname === '/register'
       ) {
+        // console.log('no headerrrrrrrrrrrr');
         return <div />;
       }
-      return <connectedHeaderPage />;
+
+      // console.log('headerrrrr');
+      return <ConnectedHeaderPage />;
     };
     return (
       <div>
@@ -54,19 +57,10 @@ class App extends React.Component {
                   <PrivateRoute exact path="/" component={Home} />
                   <PrivateRoute
                     exact
-                    path="/log_management"
-                    component={LogManagement}
-                  />
-                  <PrivateRoute
-                    exact
                     path="/services"
                     component={ConnectedServices}
                   />
-                  <PrivateRoute
-                    exact
-                    path="/service_management"
-                    component={ServiceManagement}
-                  />
+
                   <Route path="/login" component={LoginPage} />
                   <Route path="/register" component={RegisterPage} />
                 </Switch>

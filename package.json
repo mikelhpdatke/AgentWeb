@@ -10,7 +10,7 @@
     "client": "npx webpack-dev-server --mode development --devtool inline-source-map --hot",
     "start": "npm run build && node src/server/index.js",
     "dev": "npx concurrently \"npm run server\" \"npm run client\"",
-    "eslint": "eslint --fix --ext .js,.vue src"
+    "eslint": "eslint --fix --ext .js,.vue src/client"
   },
   "author": "ExpressMikel",
   "license": "ISC",
@@ -24,10 +24,12 @@
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.1.3",
     "chart.js": "^2.7.2",
+    "classnames": "^2.2.6",
     "express": "^4.16.3",
     "history": "^4.7.2",
     "moment": "^2.22.2",
     "mongoose": "^5.3.4",
+    "notistack": "^0.4.1",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-chartjs-2": "^2.7.4",

@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -69,16 +71,16 @@ class SimpleCard extends Component {
   };
 
   render() {
-    console.log(this.props.status);
-    const { classes } = this.props;
+    // console.log(this.props.status);
+    const { classes, status, send } = this.props;
     // let status = "ACTIVE";
     // console.log(this.props.card);
     // console.log(this.props.message[this.props.card]+'??????wtf');
     // if (this.props.message[this.props.card] == false) status = "INACTIVE";
     // const textModal = "Connect";
-    console.log(this.props.status, this.props.status == 'INACTIVE');
+    // console.log(this.props.status, this.props.status == 'INACTIVE');
     let button;
-    if (this.props.status == 'INACTIVE') {
+    if (status === 'INACTIVE') {
       button = (
         <Button size="small" onClick={this.handleOpen}>
           Connect
@@ -89,7 +91,7 @@ class SimpleCard extends Component {
         <Button
           size="small"
           onClick={() => {
-            this.props.send({ name: this.props.name, id: this.props.card });
+            send({ name: this.props.name, id: this.props.card });
           }}
         >
           <Link to="/services">Analyse</Link>
@@ -117,9 +119,9 @@ class SimpleCard extends Component {
         <CardActions>
           <Button
             size="small"
-            color={this.props.status == 'ACTIVE' ? 'primary' : 'secondary'}
+            color={status === 'ACTIVE' ? 'primary' : 'secondary'}
           >
-            {this.props.status}
+            {status}
           </Button>
           {button}
           <Modal
@@ -148,6 +150,8 @@ class SimpleCard extends Component {
 
 SimpleCard.propTypes = {
   classes: PropTypes.object.isRequired,
+  status: PropTypes.string.isRequired,
+  send: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({

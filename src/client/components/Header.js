@@ -92,6 +92,7 @@ ItemLink.propTypes = {
 Header.propTypes = {
   opened: PropTypes.func.isRequired,
 };
+
 function mapStateToProps(state) {
   const user = state;
   return {
@@ -107,8 +108,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(drawerActions.closed(newStatus));
   },
 });
-const connectedHeaderPage = connect(
+const ConnectedHeaderPage = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Header);
-export default connectedHeaderPage;
+export default ConnectedHeaderPage;
