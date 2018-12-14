@@ -10,23 +10,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Modal from '@material-ui/core/Modal';
-import { homeActions, servicesActions } from '../../_actions';
-
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
+import { homeActions, servicesActions, dialogsActions } from '../../_actions';
+import ConnectedAlertDialogSlide from './Dialogs';
 
 const styles = theme => ({
   paper: {
@@ -54,25 +39,9 @@ const styles = theme => ({
   },
 });
 class SimpleCard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false,
-    };
-    // this.props.inactive({ key: this.props.card, val: false });
-  }
-
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
   render() {
     // console.log(this.props.status);
-    const { classes, status, send } = this.props;
+    const { classes, status, send, openDialogs } = this.props;
     // let status = "ACTIVE";
     // console.log(this.props.card);
     // console.log(this.props.message[this.props.card]+'??????wtf');
@@ -82,7 +51,13 @@ class SimpleCard extends Component {
     let button;
     if (status === 'INACTIVE') {
       button = (
-        <Button size="small" onClick={this.handleOpen}>
+        <Button
+          size="small"
+          onClick={() => {
+            console.log('openedddddddddd');
+            openDialogs(true);
+          }}
+        >
           Connect
         </Button>
       );
@@ -124,24 +99,7 @@ class SimpleCard extends Component {
             {status}
           </Button>
           {button}
-          <Modal
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-            open={this.state.open}
-            onClose={this.handleClose}
-          >
-            <div style={getModalStyle()} className={classes.paper}>
-              <Typography variant="h6" id="modal-title">
-                CHÚ Ý
-              </Typography>
-              <Typography variant="subtitle1" id="simple-modal-description">
-                BẠN CÓ CHẮC CHẮN MUỐN CÀI ĐẶT TÁC TỬ LÊN THIẾT BỊ KHÔNG?
-              </Typography>
-              <Button variant="contained" color="secondary">
-                CÀI ĐẶT
-              </Button>
-            </div>
-          </Modal>
+          <ConnectedAlertDialogSlide />
         </CardActions>
       </Card>
     );
@@ -152,6 +110,7 @@ SimpleCard.propTypes = {
   classes: PropTypes.object.isRequired,
   status: PropTypes.string.isRequired,
   send: PropTypes.func.isRequired,
+  openDialogs: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -163,6 +122,9 @@ const mapDispatchToProps = dispatch => ({
   },
   send: newStatus => {
     dispatch(servicesActions.send(newStatus));
+  },
+  openDialogs: newStatus => {
+    dispatch(dialogsActions.openDialogs(newStatus));
   },
 });
 
