@@ -11,6 +11,7 @@ function error(message) {
 function clear() {
   return { type: alertConstants.CLEAR };
 }
+
 export const alertActions = {
   success,
   error,

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 // import { Link } from 'react-router-dom';
 // import Button from '@material-ui/core/Button';
 import ConnectedCard from './Card';
+import { PostApi } from '../Utils';
 
 const styles = {
   h1: {
@@ -22,27 +23,6 @@ const styles = {
     justifyContent: 'space-around',
   },
 };
-export async function HuanFetch(url, json) {
-  const myRequest = new Request(url, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(json),
-  });
-  await fetch(myRequest)
-    .then(response => {
-      if (response.status === 200) {
-        return response.json();
-      }
-      console.debug('Something went wrong on api server!');
-    })
-    .then(response => response)
-    .catch(error => {
-      console.debug(error);
-    });
-}
 
 class Home extends Component {
   constructor(props) {
@@ -64,7 +44,7 @@ class Home extends Component {
       ],
     };
     this.myInterval = setInterval(() => {
-      HuanFetch('/api/getClients', {}).then(res => {
+      PostApi('/api/getClients', {}).then(res => {
         console.log(res);
         this.setState({ arr: res.arr });
       });
@@ -72,7 +52,7 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    HuanFetch('/api/getClients', {}).then(res => {
+    PostApi('/api/getClients', {}).then(res => {
       console.log(res);
       this.setState({ arr: res.arr });
     });

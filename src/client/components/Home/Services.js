@@ -19,6 +19,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { homeActions } from '../../_actions/index';
 // import { servicesActions } from '../../_actions';
+import { PostApi } from '../Utils';
 
 const socket = openSocket('http://localhost:8081');
 function subscribeToTimer(cb) {
@@ -65,29 +66,6 @@ const options = [
   'Get syscall data',
 ];
 
-export async function HuanFetch(url, json) {
-  const myRequest = new Request(url, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(json),
-  });
-  await fetch(myRequest)
-    .then(response => {
-      if (response.status === 200) {
-        return response.json();
-      }
-      // return None;
-      console.debug('Something went wrong on api server!');
-    })
-    .then(response => response)
-    .catch(error => {
-      console.debug(error);
-      // return None;
-    });
-}
 class Services extends Component {
   constructor(props) {
     super(props);
@@ -176,7 +154,7 @@ class Services extends Component {
                 pid,
               };
               this.setState({ sendding: true }, () => {
-                HuanFetch('http://localhost:8081/api/fetch', data).then(() => {
+                PostApi('http://localhost:8081/api/fetch', data).then(() => {
                   console.log('Run send_cmd ok!!!');
                   // setInterval(() => {
                   //  this.setState({ sendding: false, openSnackBar:true });
