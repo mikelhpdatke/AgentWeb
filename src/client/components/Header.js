@@ -4,11 +4,11 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import './App.css';
 import ConnectedDrawers from './SettingManagement/Drawers';
 import { drawerActions } from '../_actions/drawer.actions';
 import { aisLogo, settingIcon } from './icon/Icon';
+import { ip } from './Utils';
 // import { map } from 'rsvp';
 
 const ItemLink = ({ to, titleName }) => (
@@ -55,6 +55,22 @@ class Header extends Component {
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <ul className="navbar-nav mr-auto">
               <ItemLink to="/" titleName="Home" />
+              <ItemLink to="/Dashboard" titleName="Dashboard" />
+              <a
+                style={{ color: 'black', fontWeight: 'bold' }}
+                className="nav-item nav-link"
+                exact
+                rel="noopener noreferrer"
+                target="_blank"
+                href={ip.kibana}
+                activeStyle={{
+                  fontWeight: 'bold',
+                  color: 'red',
+                  textDecoration: 'underline',
+                }}
+              >
+                Kibana
+              </a>
             </ul>
             <img
               className="pull-right"

@@ -10,8 +10,10 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { CardHeader } from '@material-ui/core';
 import { homeActions, servicesActions, dialogsActions } from '../../_actions';
 import ConnectedAlertDialogSlide from './Dialogs';
+import { verifiedIcon, warningIcon } from '../icon/Icon';
 
 const styles = theme => ({
   paper: {
@@ -37,6 +39,9 @@ const styles = theme => ({
   pos: {
     marginBottom: 12,
   },
+  fab: {
+    margin: theme.spacing.unit,
+  },
 });
 class SimpleCard extends Component {
   render() {
@@ -49,6 +54,7 @@ class SimpleCard extends Component {
     // const textModal = "Connect";
     // console.log(this.props.status, this.props.status == 'INACTIVE');
     let button;
+    let statusButton;
     if (status === 'INACTIVE') {
       button = (
         <Button
@@ -61,6 +67,15 @@ class SimpleCard extends Component {
           Connect
         </Button>
       );
+      statusButton = (
+        <img
+          src={warningIcon}
+          width="25"
+          height="25"
+          alt=""
+          style={{ margin: '5px 10px' }}
+        />
+      );
     } else {
       button = (
         <Button
@@ -72,18 +87,25 @@ class SimpleCard extends Component {
           <Link to="/services">Analyse</Link>
         </Button>
       );
+      statusButton = (
+        <img
+          src={verifiedIcon}
+          width="25"
+          height="25"
+          alt=""
+          style={{ margin: '5px 10px' }}
+        />
+      );
     }
 
     return (
       <Card className={classes.card}>
+        <CardHeader
+          action={statusButton}
+          title={`Client: ${this.props.name}`}
+          subheader={`${this.props.name}`}
+        />
         <CardContent>
-          <Typography
-            className={classes.title}
-            color="textSecondary"
-            gutterBottom
-          >
-            {`Client: ${this.props.name}`}
-          </Typography>
           <Typography variant="h5" component="h2">
             {`IP: ${this.props.ip}`}
           </Typography>

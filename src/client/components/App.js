@@ -18,6 +18,7 @@ import { LoginPage } from './LoginPage';
 import { RegisterPage } from './RegisterPage';
 // import connectedDrawers from './SettingManagement/Drawers';
 import ConnectedServices from './Home/Services';
+import Dashboard from './Dashboard/Dashboard';
 
 class App extends React.Component {
   constructor(props) {
@@ -60,7 +61,7 @@ class App extends React.Component {
                     path="/services"
                     component={ConnectedServices}
                   />
-
+                  <Route exact path="/Dashboard" component={Dashboard} />
                   <Route path="/login" component={LoginPage} />
                   <Route path="/register" component={RegisterPage} />
                 </Switch>
