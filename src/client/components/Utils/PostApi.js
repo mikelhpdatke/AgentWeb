@@ -1,5 +1,3 @@
-import { Promise } from 'mongoose';
-
 export async function PostApi(url, json) {
   const myRequest = new Request(url, {
     method: 'POST',
@@ -9,19 +7,16 @@ export async function PostApi(url, json) {
     },
     body: JSON.stringify(json),
   });
-  const result = await fetch(myRequest)
+  const result = fetch(myRequest)
     .then(response => {
       if (response.status === 200) {
         return response.json();
       }
-      console.debug('Something went wrong on api server!');
-      return undefined;
+      console.log('Something went wrong on api server!');
     })
+    .then(response => response)
     .catch(error => {
-      console.debug(error);
-      return undefined;
+      console.log(`Stm went wronggggg${error}`);
     });
-  return new Promise(resolve => {
-    resolve(result);
-  });
+  return result;
 }

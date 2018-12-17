@@ -6,6 +6,7 @@ import './App.css';
 import { connect } from 'react-redux';
 // import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { ToastProvider } from 'react-toast-notifications';
 import ConnectedHeaderPage from './Header';
 import Home from './Home/Home';
 // import LogManagement from './LogManagement/LogManagement';
@@ -45,31 +46,33 @@ class App extends React.Component {
       return <ConnectedHeaderPage />;
     };
     return (
-      <div>
+      <ToastProvider>
         <div>
           <div>
-            {alert.message && (
-              <div className={`alert ${alert.type}`}>{alert.message}</div>
-            )}
-            <Router history={history}>
-              <div>
-                {showHeader(history)}
-                <Switch>
-                  <PrivateRoute exact path="/" component={Home} />
-                  <PrivateRoute
-                    exact
-                    path="/services"
-                    component={ConnectedServices}
-                  />
-                  <Route exact path="/Dashboard" component={Dashboard} />
-                  <Route path="/login" component={LoginPage} />
-                  <Route path="/register" component={RegisterPage} />
-                </Switch>
-              </div>
-            </Router>
+            <div>
+              {alert.message && (
+                <div className={`alert ${alert.type}`}>{alert.message}</div>
+              )}
+              <Router history={history}>
+                <div>
+                  {showHeader(history)}
+                  <Switch>
+                    <PrivateRoute exact path="/" component={Home} />
+                    <PrivateRoute
+                      exact
+                      path="/services"
+                      component={ConnectedServices}
+                    />
+                    <Route exact path="/Dashboard" component={Dashboard} />
+                    <Route path="/login" component={LoginPage} />
+                    <Route path="/register" component={RegisterPage} />
+                  </Switch>
+                </div>
+              </Router>
+            </div>
           </div>
         </div>
-      </div>
+      </ToastProvider>
     );
   }
 }

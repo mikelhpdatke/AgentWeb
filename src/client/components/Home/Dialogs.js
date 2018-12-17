@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
+import { withToastManager } from 'react-toast-notifications';
 import { dialogsActions } from '../../_actions';
 import { PostApi } from '../Utils';
 
@@ -18,8 +18,12 @@ function Transition(props) {
 }
 
 class AlertDialogSlide extends React.Component {
+  toastId = null;
+
+  customToastId = 'xxx-yyy';
+
   render() {
-    const { dialogs, closeDialogs } = this.props;
+    const { dialogs, closeDialogs, toastManager } = this.props;
     console.log(`${dialogs.message}ffffffffffffffff`);
     return (
       <div>
@@ -53,29 +57,26 @@ class AlertDialogSlide extends React.Component {
                 closeDialogs(false);
                 PostApi('/api/installAgent', {})
                   .then(res => {
-                    if (res === undefined) Promise.reject(new Error('err'));
-                    toast.success(
-                      '🦄 Wow you has been install successfully, so easyy!',
-                      {
-                        position: 'top-right',
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                      }
-                    );
+                    // console.log('in postapi resssss');
+                    // console.log(`${res.status}in postapi resssss`);
+                    if (res.status === 'err') {
+                      console.log('wtf ress???');
+                      return Promise.reject(new Error('err'));
+                    }
+                    console.log('show toaskkkkkkkk');
+                    toastManager.add('Install agent successfully', {
+                      appearance: 'success',
+                      autoDismissTimeout: '5000',
+                      autoDismiss: 'true',
+                    });
                   })
                   .catch(() => {
-                    toast.error(
-                      ' Oops!!Got some error while installing agent....!!!!!!!!!!!!!!!!',
+                    toastManager.add(
+                      'Somethings went wrong, please try again!',
                       {
-                        position: 'top-right',
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
+                        appearance: 'error',
+                        autoDismissTimeout: '5000',
+                        autoDismiss: 'true',
                       }
                     );
                   });
@@ -94,6 +95,7 @@ class AlertDialogSlide extends React.Component {
 AlertDialogSlide.propTypes = {
   dialogs: PropTypes.object.isRequired,
   closeDialogs: PropTypes.func.isRequired,
+  toastManager: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -116,4 +118,4 @@ const ConnectedAlertDialogSlide = connect(
   mapStateToProps,
   mapDispatchToProps
 )(AlertDialogSlide);
-export default ConnectedAlertDialogSlide;
+export default withToastManager(ConnectedAlertDialogSlide);

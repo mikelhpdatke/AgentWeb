@@ -5,10 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 // import { Link } from 'react-router-dom';
 // import Button from '@material-ui/core/Button';
-import { ToastContainer } from 'react-toastify';
 import ConnectedCard from './Card';
 import { PostApi } from '../Utils';
-import 'react-toastify/dist/ReactToastify.css';
 
 const styles = {
   h1: {
@@ -60,6 +58,19 @@ class Home extends Component {
     });
   }
 
+  componentDidMount() {
+    /*
+    toast('🦄 Wow so easy!', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+    */
+  }
+
   componentWillUnmount() {
     clearInterval(this.myInterval);
   }
@@ -68,21 +79,7 @@ class Home extends Component {
     const { classes } = this.props;
     return (
       <div>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnVisibilityChange
-          draggable
-          pauseOnHover
-        />
-        {/* Same as */}
-        <ToastContainer />
         <h1 className={classes.h1}>Controller</h1>
-
         <div className={classes.contrainer}>
           {this.state.arr.map(x => (
             <ConnectedCard

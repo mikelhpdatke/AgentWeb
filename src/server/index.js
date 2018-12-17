@@ -8,6 +8,20 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+
+async function installAgent(ip, user, pass) {
+  const { stdout, stderr } = await exec(
+    `python2 src/server/InstallAgent.py ${ip} ${user} ${pass}`
+  );
+  // const { stdout, stderr } = await exec(`pwd`);
+  console.log('stdout:', stdout);
+  console.log('stderr:', stderr);
+  if (stderr) return { status: 'err' };
+  return { status: 'ok' };
+}
+
 app.use(express.static('dist'));
 
 app.post('/api/users/register', jsonParser, (req, res) => {
@@ -15,17 +29,20 @@ app.post('/api/users/register', jsonParser, (req, res) => {
   const { firstName, lastName, username, password } = req.body;
   console.log(firstName, lastName, username, password);
   res.status(200);
-  res.send({ status: 'okkkkkkkkkk' });
+  res.send({ status: 'ok' });
   res.end();
 });
 
 app.post('/api/installAgent', jsonParser, (req, res) => {
   // do somethings with devices // install agent....
-  res.status(200);
-  console.log('ok');
-  res.send({ status: 'ok' });
-  res.end();
+  installAgent('192.168.0.109', 'ais', '1').then(response => {
+    res.status(200);
+    console.log(response);
+    res.send(response);
+    res.end();
+  });
 });
+
 app.post('/api/users/authenticate', jsonParser, (req, res) => {
   console.log(req.body);
   const user = {
