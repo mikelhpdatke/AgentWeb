@@ -69,7 +69,7 @@ class Header extends Component {
                   textDecoration: 'underline',
                 }}
               >
-                Kibana
+                Management
               </a>
             </ul>
             <img

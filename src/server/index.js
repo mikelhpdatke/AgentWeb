@@ -18,6 +18,14 @@ app.post('/api/users/register', jsonParser, (req, res) => {
   res.send({ status: 'okkkkkkkkkk' });
   res.end();
 });
+
+app.post('/api/installAgent', jsonParser, (req, res) => {
+  // do somethings with devices // install agent....
+  res.status(200);
+  console.log('ok');
+  res.send({ status: 'ok' });
+  res.end();
+});
 app.post('/api/users/authenticate', jsonParser, (req, res) => {
   console.log(req.body);
   const user = {

@@ -9,7 +9,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 import { dialogsActions } from '../../_actions';
+import { PostApi } from '../Utils';
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -49,6 +51,34 @@ class AlertDialogSlide extends React.Component {
             <Button
               onClick={() => {
                 closeDialogs(false);
+                PostApi('/api/installAgent', {})
+                  .then(res => {
+                    if (res === undefined) Promise.reject(new Error('err'));
+                    toast.success(
+                      '🦄 Wow you has been install successfully, so easyy!',
+                      {
+                        position: 'top-right',
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                      }
+                    );
+                  })
+                  .catch(() => {
+                    toast.error(
+                      ' Oops!!Got some error while installing agent....!!!!!!!!!!!!!!!!',
+                      {
+                        position: 'top-right',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                      }
+                    );
+                  });
               }}
               color="primary"
             >
