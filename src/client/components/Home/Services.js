@@ -19,9 +19,9 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { homeActions } from '../../_actions/index';
 // import { servicesActions } from '../../_actions';
-import { PostApi } from '../Utils';
+import { PostApi, ip } from '../Utils';
 
-const socket = openSocket('http://localhost:8081');
+const socket = openSocket(ip.server);
 function subscribeToTimer(cb) {
   socket.on('timer', res => cb(null, res));
 }
@@ -154,7 +154,7 @@ class Services extends Component {
                 pid,
               };
               this.setState({ sendding: true }, () => {
-                PostApi('http://localhost:8081/api/fetch', data).then(() => {
+                PostApi('api/fetch', data).then(() => {
                   console.log('Run send_cmd ok!!!');
                   // setInterval(() => {
                   //  this.setState({ sendding: false, openSnackBar:true });
